@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="344.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FutureDuesSummaryController">
+<VBox prefHeight="344.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FutureDuesSummaryController">
     <children>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="343.0" prefWidth="508.0" VBox.vgrow="ALWAYS">
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="350.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
             <children>
                 <Label fx:id="tierLabel" layoutX="91.0" layoutY="101.0" prefHeight="33.0" prefWidth="199.0" text="Label" />
                 <HBox alignment="CENTER" layoutX="253.0" layoutY="201.0" prefHeight="53.0" prefWidth="179.0" spacing="15.0">
