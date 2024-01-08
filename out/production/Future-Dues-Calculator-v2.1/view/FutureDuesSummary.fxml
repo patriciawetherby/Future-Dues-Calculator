@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="344.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FutureDuesSummaryController">
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="350.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Label fx:id="tierLabel" layoutX="91.0" layoutY="101.0" prefHeight="33.0" prefWidth="199.0" text="Label" />
+                <HBox alignment="CENTER" layoutX="253.0" layoutY="201.0" prefHeight="53.0" prefWidth="179.0" spacing="15.0">
+                    <children>
+                        <Button fx:id="closeButton" mnemonicParsing="false" onAction="#onActionCloseApplication" text="Close" />
+                        <Button fx:id="restartButton" mnemonicParsing="false" onAction="#onActionReturnToMain" text="Restart" />
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </HBox>
+                <Label fx:id="duesLabel" layoutX="91.0" layoutY="144.0" prefHeight="33.0" prefWidth="199.0" text="Label" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
