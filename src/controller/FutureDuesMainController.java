@@ -123,9 +123,13 @@ public class FutureDuesMainController implements Initializable {
 
             try{
 
-                LocalDate birthday = datePicker.getValue();
+                String inputDate = datePicker.getEditor().getText();
 
-                System.out.println(birthday);
+                System.out.println("Text Input: "+ inputDate);
+
+                // Format String inputDate to LocalDate
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                LocalDate birthday = LocalDate.parse(inputDate, formatter);
 
                 int age = getAge(birthday);
 
@@ -137,13 +141,8 @@ public class FutureDuesMainController implements Initializable {
                 String nextTier = tier[1];
                 String futureAge = tier[2];
 
-                System.out.println("Test1");
-
                 // Calculate Date at Next Tier (FUNCTION)
                 String futureDate = getNextTierDate(birthday,futureAge);
-
-                //updateData(birthday,age,currentTier,nextTier,futureDate);
-
 
                 System.out.println(
                         "Current Age: " + age + System.lineSeparator() +
