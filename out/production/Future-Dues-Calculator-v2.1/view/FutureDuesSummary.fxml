@@ -11,7 +11,8 @@
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="350.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
             <children>
-                <Label fx:id="tierLabel" layoutX="91.0" layoutY="101.0" prefHeight="33.0" prefWidth="199.0" text="Label" />
+                <Label fx:id="tierLabel" layoutX="91.0" layoutY="86.0" prefHeight="33.0" prefWidth="318.0" />
+                <Label fx:id="duesLabel" layoutX="91.0" layoutY="139.0" prefHeight="33.0" prefWidth="318.0" />
                 <HBox alignment="CENTER" layoutX="253.0" layoutY="201.0" prefHeight="53.0" prefWidth="179.0" spacing="15.0">
                     <children>
                         <Button fx:id="closeButton" mnemonicParsing="false" onAction="#onActionCloseApplication" text="Close" />
@@ -21,7 +22,6 @@
                         <Insets />
                     </opaqueInsets>
                 </HBox>
-                <Label fx:id="duesLabel" layoutX="91.0" layoutY="144.0" prefHeight="33.0" prefWidth="199.0" text="Label" />
             </children>
         </AnchorPane>
     </children>

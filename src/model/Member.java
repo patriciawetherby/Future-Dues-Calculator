@@ -11,9 +11,10 @@ public class Member {
     private String futureDate;
 
     // Member Constructor
-    public Member(LocalDate birthday, int age,String nextTier, String futureDate) {
+    public Member(LocalDate birthday, int age, String currentTier, String nextTier, String futureDate) {
         this.birthday = birthday;
         this.age = age;
+        this.currentTier = currentTier;
         this.nextTier = nextTier;
         this.futureDate = futureDate;
     }

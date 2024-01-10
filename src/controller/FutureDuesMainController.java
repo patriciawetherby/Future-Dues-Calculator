@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -7,30 +8,45 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.StringConverter;
 import model.Member;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class FutureDuesMainController implements Initializable {
 
+    //private Member member;
 
     @FXML
     private DatePicker datePicker;
 
     @FXML
     private ImageView imageView;
+
+    @FXML
+    Label tierLabel;
+
+    @FXML
+    Label duesLabel;
+
+    Member mainMember;
 
     // Calculate Age
     public static int getAge(LocalDate date){
@@ -87,89 +103,123 @@ public class FutureDuesMainController implements Initializable {
         return tier;
     }
 
-    private void switchToNewView(Window window) throws IOException {
+    // Parse String input from DatePicker and format to LocalDate
+    private LocalDate parseDate(String inputDate) {
+
+        if (inputDate == null || inputDate.isEmpty()) {
+            return null; // Empty input, return null TODO: Add Error message here?
+        }
+        DateTimeFormatter[] formatters = {
+                DateTimeFormatter.ofPattern("MM/dd/yyyy"),
+                DateTimeFormatter.ofPattern("M/d/yyyy"),
+                DateTimeFormatter.ofPattern("MM/d/yyyy"),
+                DateTimeFormatter.ofPattern("M/dd/yyyy")
+        };
+
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                // If parsing is successful, return the parsed date
+                return LocalDate.parse(inputDate, formatter);
+            } catch (DateTimeParseException ignored) {
+                // Continue to the next formatter if parsing fails
+            }
+        }
+        return null; // Return null for inputs that couldn't be parsed
+    }
+
+    // Switch to next scene and send Member object data
+    private void switchToNewView(Window window, Member mainMember) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FutureDuesSummary.fxml"));
         Parent scene = loader.load();
+
+        // Give Summary Page access to methods on this page
+        FutureDuesSummaryController controller = loader.getController();
+        controller.getMember(mainMember);
 
         Stage stage = (Stage) window;
         stage.setScene(new Scene(scene));
         stage.show();
     }
 
-    public void updateData(LocalDate birthday, int age, String currentTier, String nextTier, String futureDate){
-
-        member.setBirthday(birthday);
-        member.setAge(age);
-        member.setCurrentTier(currentTier);
-        member.setNextTier(nextTier);
-        member.setFutureDate(futureDate);
-    }
-
-    private Member member;
-
-
-
+    // Handle DatePicker event when "ENTER" key is pressed after inputting a String/picking a Date
     @FXML
-    void enterKey(KeyEvent event) throws IOException {
+    void enterKey(KeyEvent event) throws DateTimeParseException{
 
-
-            // Add listener to clear the value when the menu is opened
+            // Add listener to clear the value of the DatePicker Field
             datePicker.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                 if (isNowFocused) {
                     datePicker.setValue(null); // Clear the value
                 }
             });
 
+            try {
+                // Handle ENTER press
+                if(event.getCode() == KeyCode.ENTER) {
 
-            try{
+                    // Post Scene Change processing:
 
-                String inputDate = datePicker.getEditor().getText();
+                    // Get put from DatePicker
+                    String inputDate = datePicker.getEditor().getText();
 
-                System.out.println("Text Input: "+ inputDate);
+                    // Format Input (FUNCTION)
+                    LocalDate birthday = parseDate(inputDate);
 
-                // Format String inputDate to LocalDate
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-                LocalDate birthday = LocalDate.parse(inputDate, formatter);
+                    // Get additional variables
 
-                int age = getAge(birthday);
+                    // Check if birthday is not null
+                    if (birthday != null) {
+                        int age = getAge(birthday);
 
-                // Calculate Tier List of user (FUNCTION)
-                String[] tier = getTier(age);
+                        // Calculate Tier List of user (FUNCTION)
+                        String[] tier = getTier(age);
 
-                // Set variables using results from array
-                String currentTier = tier[0];
-                String nextTier = tier[1];
-                String futureAge = tier[2];
+                        // Set variables using results from array
+                        String currentTier = tier[0];
+                        String nextTier = tier[1];
+                        String futureAge = tier[2];
 
-                // Calculate Date at Next Tier (FUNCTION)
-                String futureDate = getNextTierDate(birthday,futureAge);
+                        String futureDate = "";
 
-                System.out.println(
-                        "Current Age: " + age + System.lineSeparator() +
-                                "Current Tier: " + currentTier + System.lineSeparator() +
-                                "Next Tier: " + nextTier + System.lineSeparator() +
-                                "Date at Next Tier: " + futureDate
-                );
+                        // Calculate Date at Next Tier (FUNCTION)
+                        futureDate = getNextTierDate(birthday, futureAge);
 
-                if (event.getCode() == KeyCode.ENTER){
-                    switchToNewView(datePicker.getScene().getWindow());
+                        // Create object and data to send to new scene
+                        Member mainMember = new Member(birthday, age, currentTier, nextTier, futureDate);
+
+                        //Test output
+//                        System.out.println(
+//                                "Current Age: " + age + System.lineSeparator() +
+//                                        "Current Tier: " + currentTier + System.lineSeparator() +
+//                                        "Next Tier: " + nextTier + System.lineSeparator() +
+//                                        "Date at Next Tier: " + futureDate
+//                        );
+
+                        // OLD: When "Enter" key is pressed, move to next screen
+//                        if (event.getCode() == KeyCode.ENTER) {
+//                            switchToNewView(datePicker.getScene().getWindow(), mainMember);
+//                        }
+
+                        // Switch to new Scene when processing is finished
+                        switchToNewView(datePicker.getScene().getWindow(), mainMember);
+                    } else {
+                        // Handle invalid date input
+                        Platform.runLater(() -> {
+                            try {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error");
+                                alert.setContentText("Please enter a valid date");
+                                alert.showAndWait();
+                            }
+                            catch(Exception error){
+                                System.err.println("Error displaying alert: " + error.getMessage());
+                            }
+                        });
+                    }
                 }
-
+            } catch(DateTimeParseException | NullPointerException | IOException e){
+                System.out.println("Error: " + e.getMessage());
             }
-            catch(NullPointerException e){
-                System.out.println("An error occurred: " + e.getMessage());
-            }
-            catch(NumberFormatException e){
-                Alert alert = new Alert(Alert.AlertType.ERROR); //Alert dialog box
-                alert.setTitle("Error");
-                alert.setContentText("Please enter a valid date");
-                alert.showAndWait();
-            }
-
-
-
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
