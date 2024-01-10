@@ -53,6 +53,13 @@ public class FutureDuesMainController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(date, currentDate);
 
+        if(period.getYears() <= 0){
+            Alert alert = new Alert(Alert.AlertType.WARNING); //Alert dialog box
+            alert.setTitle("Warning Dialog");
+            alert.setContentText("Dates cannot be set in the future");
+            alert.showAndWait();
+        }
+
         return period.getYears();
 
     }
@@ -95,10 +102,13 @@ public class FutureDuesMainController implements Initializable {
         else if (age >= 23){
             tier[0] = "Adult";
             tier[1] = "Adult";
-            tier[2] = "23"; // TO DO: Should prompt an error message "This user is already an adult
+            tier[2] = "23";
         }
         else{
-            System.out.println("Error when calculating Membership Tier: Invalid Age");
+            Alert alert = new Alert(Alert.AlertType.WARNING); //Alert dialog box
+            alert.setTitle("Warning Dialog");
+            alert.setContentText("Invalid Age: Cannot calculate Membership details");
+            alert.showAndWait();
         }
         return tier;
     }
@@ -107,8 +117,17 @@ public class FutureDuesMainController implements Initializable {
     private LocalDate parseDate(String inputDate) {
 
         if (inputDate == null || inputDate.isEmpty()) {
-            return null; // Empty input, return null TODO: Add Error message here?
+            Alert alert1 = new Alert(Alert.AlertType.WARNING); //Alert dialog box
+            alert1.setTitle("Warning Dialog");
+            alert1.setContentText("Please do not leave entries blank");
+            alert1.showAndWait();
+            return null; // Empty input, return null
         }
+
+        if (!inputDate.matches("[0-9/]+")) {
+            return null; // Invalid characters found, return null
+        }
+
         DateTimeFormatter[] formatters = {
                 DateTimeFormatter.ofPattern("MM/dd/yyyy"),
                 DateTimeFormatter.ofPattern("M/d/yyyy"),
@@ -120,7 +139,7 @@ public class FutureDuesMainController implements Initializable {
             try {
                 // If parsing is successful, return the parsed date
                 return LocalDate.parse(inputDate, formatter);
-            } catch (DateTimeParseException ignored) {
+            } catch (DateTimeParseException ignore) {
                 // Continue to the next formatter if parsing fails
             }
         }
@@ -164,62 +183,55 @@ public class FutureDuesMainController implements Initializable {
                     // Format Input (FUNCTION)
                     LocalDate birthday = parseDate(inputDate);
 
+
                     // Get additional variables
 
-                    // Check if birthday is not null
-                    if (birthday != null) {
-                        int age = getAge(birthday);
+                    // Check if birthday is null
+                    if (birthday == null) {
+                        //Handle invalid date input on the JavaFX Application Thread
+//                        Platform.runLater(() -> {
+//                            // Log statements for debugging purposes
+//                            System.out.println("Creating and showing an alert for invalid date input...");
+//                            Alert alert = new Alert(Alert.AlertType.ERROR);
+//                            alert.setTitle("Error");
+//                            alert.setContentText("Please enter a valid date");
+//
+//                            // Show the alert
+//                            alert.showAndWait();
+//                        });
 
-                        // Calculate Tier List of user (FUNCTION)
-                        String[] tier = getTier(age);
+                        // Exit the enterKey() function
+                        System.out.println("Error: Age is Null");
+                        return;
+                    }
 
-                        // Set variables using results from array
-                        String currentTier = tier[0];
-                        String nextTier = tier[1];
-                        String futureAge = tier[2];
+                    int age = getAge(birthday);
 
-                        String futureDate = "";
+                    // Calculate Tier List of user (FUNCTION)
+                    String[] tier = getTier(age);
 
-                        // Calculate Date at Next Tier (FUNCTION)
-                        futureDate = getNextTierDate(birthday, futureAge);
+                    // Set variables using results from array
+                    String currentTier = tier[0];
+                    String nextTier = tier[1];
+                    String futureAge = tier[2];
 
-                        // Create object and data to send to new scene
-                        Member mainMember = new Member(birthday, age, currentTier, nextTier, futureDate);
+                    String futureDate = "";
 
-                        //Test output
-//                        System.out.println(
-//                                "Current Age: " + age + System.lineSeparator() +
-//                                        "Current Tier: " + currentTier + System.lineSeparator() +
-//                                        "Next Tier: " + nextTier + System.lineSeparator() +
-//                                        "Date at Next Tier: " + futureDate
-//                        );
+                    // Calculate Date at Next Tier (FUNCTION)
+                    futureDate = getNextTierDate(birthday, futureAge);
 
-                        // OLD: When "Enter" key is pressed, move to next screen
-//                        if (event.getCode() == KeyCode.ENTER) {
-//                            switchToNewView(datePicker.getScene().getWindow(), mainMember);
-//                        }
+                    // Create object and data to send to new scene
+                    Member mainMember = new Member(birthday, age, currentTier, nextTier, futureDate);
 
                         // Switch to new Scene when processing is finished
                         switchToNewView(datePicker.getScene().getWindow(), mainMember);
-                    } else {
-                        // Handle invalid date input
-                        Platform.runLater(() -> {
-                            try {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Error");
-                                alert.setContentText("Please enter a valid date");
-                                alert.showAndWait();
-                            }
-                            catch(Exception error){
-                                System.err.println("Error displaying alert: " + error.getMessage());
-                            }
-                        });
-                    }
+
                 }
-            } catch(DateTimeParseException | NullPointerException | IOException e){
-                System.out.println("Error: " + e.getMessage());
+            } catch(IOException | RuntimeException e){
+                System.out.println("Error at end of Event Function: " + e.getMessage());
             }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
