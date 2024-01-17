@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class FutureDuesMainController implements Initializable {
@@ -236,11 +237,12 @@ public class FutureDuesMainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
-
         // Display the Insight Logo image
-        File file = new File("@../../Pictures/InsightLogo.png");
-        Image image = new Image(file.toURI().toString());
+        //File file = new File("@../resources/InsightLogo.png");
+        //Image image = new Image(file.toURI().toString());
+
+        String imagePath = "../resources/InsightLogo.png";
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         imageView.setImage(image);
 
     }

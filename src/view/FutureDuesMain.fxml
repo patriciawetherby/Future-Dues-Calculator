@@ -13,11 +13,11 @@
       <children>
             <ImageView fx:id="imageView" fitHeight="81.0" fitWidth="188.0" layoutX="159.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Pictures/InsightLogo.png" />
+                  <Image url="@../resources/InsightLogo.png" />
                </image>
             </ImageView>
             <DatePicker fx:id="datePicker" layoutX="133.0" layoutY="199.0" onKeyPressed="#enterKey" prefHeight="25.0" prefWidth="205.0" />
-            <Label layoutX="155.0" layoutY="245.0" text="Enter date as MM/DD/YYYY" />
+            <Label layoutX="150.0" layoutY="246.0" text="Enter birthdate as MM/DD/YYYY" />
       </children>
     </AnchorPane>
   </children>

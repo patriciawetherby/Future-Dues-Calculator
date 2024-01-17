@@ -12,6 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage mainPage) throws Exception{
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FutureDuesMain.fxml"));
         Parent calc = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/FutureDuesMain.fxml")));
 
@@ -19,8 +20,6 @@ public class Main extends Application {
         mainPage.setScene(new Scene(calc));
         mainPage.show();
     }
-
-
     public static void main(String[] args) {
         launch(args);
     }
