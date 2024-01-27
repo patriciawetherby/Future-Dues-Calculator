@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,19 +14,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.StringConverter;
 import model.Member;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -90,15 +84,15 @@ public class FutureDuesMainController implements Initializable {
             tier[1] = "Youth";
             tier[2] = "5";
         }
-        else if (age >= 5 && age < 14){
+        else if (age > 4 && age <= 13){
             tier[0] = "Youth";
             tier[1] = "Young Adult";
             tier[2] = "14";
         }
-        else if (age >= 14 && age < 23){
+        else if (age > 13 && age <= 22){
             tier[0] = "Young Adult";
             tier[1] = "Adult";
-            tier[2] = "14";
+            tier[2] = "23";
         }
         else if (age >= 23){
             tier[0] = "Adult";
@@ -221,6 +215,8 @@ public class FutureDuesMainController implements Initializable {
                     // Calculate Date at Next Tier (FUNCTION)
                     futureDate = getNextTierDate(birthday, futureAge);
 
+                    System.out.println("Birthday : " + birthday + "/n");
+
                     // Create object and data to send to new scene
                     Member mainMember = new Member(birthday, age, currentTier, nextTier, futureDate);
 
@@ -238,10 +234,10 @@ public class FutureDuesMainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         // Display the Insight Logo image
-        //File file = new File("@../resources/InsightLogo.png");
+        //File file = new File("/interfaces/resources/InsightLogo.png");
         //Image image = new Image(file.toURI().toString());
 
-        String imagePath = "../resources/InsightLogo.png";
+        String imagePath = "/interfaces/resources/InsightLogo.png";
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         imageView.setImage(image);
 

@@ -13,7 +13,7 @@
       <children>
             <ImageView fx:id="imageView" fitHeight="81.0" fitWidth="188.0" layoutX="159.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/InsightLogo.png" />
+                  <Image url="@../interfaces/resources/InsightLogo.png" />
                </image>
             </ImageView>
             <DatePicker fx:id="datePicker" layoutX="133.0" layoutY="199.0" onKeyPressed="#enterKey" prefHeight="25.0" prefWidth="205.0" />

@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Future-Dues-Calculator-v2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Future_Dues_Calculator_v2_jar</output-path>
+    <root id="archive" name="Future-Dues-Calculator-v2.jar">
+      <element id="module-output" name="Future-Dues-Calculator-v2" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-base-11-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-base-11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-controls-11-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-graphics-11-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-controls-11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-fxml-11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-fxml-11-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/javafx-graphics-11.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
